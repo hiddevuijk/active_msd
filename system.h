@@ -58,7 +58,7 @@ class System {
 };
 
 System::System(double dt, double vs, double alpha, double D, double Dr, int seed)
-    : dt_(dt), vs_(vs), alpha_(alpha_), D_(D), Dr_(Dr),
+    : dt_(dt), vs_(vs), alpha_(alpha), D_(D), Dr_(Dr),
 	  position_(), orientation_(),
       ndist(0., 1.), rng(seed), rndist(rng, ndist) 
 { randomOrientation(); };
