@@ -4,6 +4,7 @@
  * To Do:
  *	Check cross product
  *	implement random orientation
+ *	implement tumble
  *
  */
 
@@ -35,6 +36,7 @@ class System {
  private:
   // set all positions of the particles to 
   void randomOrientation();
+  void normalizeOrientation();
 
 
   // single time step
@@ -48,7 +50,7 @@ class System {
   double Dr_;// rotational diffusion constant
 
   Vec3 position_;
-  Vec3 orientaion_;
+  Vec3 orientation_;
 
   const boost::normal_distribution<double> ndist;
   boost::mt19937 rng;		
@@ -74,30 +76,59 @@ void System::integrate(double t)
 void System::step(double dt)
 {
  
-  r += vs * orientation_ * dt; 
-  r.x += sqrt(2 * dt * D_) * rndist();
-  r.y += sqrt(2 * dt * D_) * rndist();
-  r.z += sqrt(2 * dt * D_) * rndist();
+  position_ += vs_ * orientation_ * dt; 
+  position_.x += sqrt(2 * dt * D_) * rndist();
+  position_.y += sqrt(2 * dt * D_) * rndist();
+  position_.z += sqrt(2 * dt * D_) * rndist();
 
  
   Vec3 dp(0, 0, 0);
   Vec3 eta(rndist(), rndist(), rndist());
 
-  dp.x = orientation_.y * eta_.z - orientation_.z * eta_.y;
-  dp.y = orientation_.z * eta_.x - orientation_.x * eta_.z;
-  dp.z = orientation_.x * eta_.y - orientation_.y * eta_.x;
+  dp.x = orientation_.y * eta.z - orientation_.z * eta.y;
+  dp.y = orientation_.z * eta.x - orientation_.x * eta.z;
+  dp.z = orientation_.x * eta.y - orientation_.y * eta.x;
 
-  p = sqrt(2 * dt * Dr_) * dp;
+  orientation_ += sqrt(2 * dt * Dr_) * dp;
+
+  normalizeOrientation();
 
 }
 
 
 void System::randomOrientation()
 {
+  orientation_.x = 1.; 
+  orientation_.y = 0.; 
+  orientation_.z = 0.; 
+  double dt = 1e-3;
+  double t = 0;
+  while ( t < 10 * Dr_) {
+    Vec3 dp(0, 0, 0);
+    Vec3 eta(rndist(), rndist(), rndist());
+
+    dp.x = orientation_.y * eta.z - orientation_.z * eta.y;
+    dp.y = orientation_.z * eta.x - orientation_.x * eta.z;
+    dp.z = orientation_.x * eta.y - orientation_.y * eta.x;
+
+    orientation_ += sqrt(2 * dt * Dr_) * dp;
+	normalizeOrientation();
+	t += dt;
+  }
 
 }
 
 
+void System::normalizeOrientation()
+{
+	double l = 0;
+	l += orientation_.x * orientation_.x;
+	l += orientation_.y * orientation_.y;
+	l += orientation_.z * orientation_.z;
+
+	orientation_ /= sqrt(l);
+
+}
 
 
 #endif //GUARD_SYSTEM_H

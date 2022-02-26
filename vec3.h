@@ -4,7 +4,7 @@
 class Vec3 {
 public:
   Vec3() : x(), y(), z() {}
-  Vec3(double x, double y, double z) : x(x), y(y), double z {}
+  Vec3(double x, double y, double z) : x(x), y(y), z(z) {}
 
   Vec3& operator+=(const Vec3& vRHS)
   { x += vRHS.x;
@@ -56,7 +56,7 @@ Vec3 operator+(const Vec3& v1, const Vec3& v2)
 { return Vec3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z); }
 
 Vec3 operator-(const Vec3& v1, const Vec3& v2)
-{ return Vec3(v1.x - v3.x, v1.y - v2.y, v1.z - v2.z); }
+{ return Vec3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z); }
 
 Vec3 operator*(const Vec3& v1, const Vec3& v2)
 { return Vec3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z); }
@@ -69,7 +69,7 @@ Vec3 operator*(const Vec3& v, const double& a)
 Vec3 operator/(const Vec3& v1, const Vec3& v2)
 { return Vec3(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z); }
 Vec3 operator/(const Vec3& v, const double& a)
-{ return Vec3(v.x / a, v.y /a, v.z / z); }
+{ return Vec3(v.x / a, v.y /a, v.z / a); }
 
 
 

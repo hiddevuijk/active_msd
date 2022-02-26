@@ -1,0 +1,11 @@
+dt = 1e-4
+vs = 10.
+alpha = 0
+D = 1.
+Dr = 0.5
+seed = 123456789
+
+totalTime = 1000
+
+ntime = 30000
+sampleDt = 0.01
